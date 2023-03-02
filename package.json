@@ -1,0 +1,33 @@
+{
+  "name": "dynamodb-migrator",
+  "version": "0.0.1",
+  "description": "A simple framework to manage DynamoDB migrations as code",
+  "main": "dist/index.js",
+  "bin": {
+    "migrator": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "eslint": "eslint src/ --ext .ts"
+  },
+  "author": {
+    "name": "Theo",
+    "email": "theo.t@oolio.com"
+  },
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@hitz-group/dynamo-helper": "^0.5.19",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.3",
+    "@types/yargs": "^17.0.22",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  }
+}
