@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { dynamicImport } from 'tsimportlib';
 import { Migration, MigratorConfig } from './types';
 
 /**
@@ -64,5 +63,5 @@ export async function loadAllModules(paths: string[]) {
 }
 
 export function isValidMigration(module: any): module is Migration {
-  return module instanceof Migration;
+  return module.default instanceof Migration;
 }
