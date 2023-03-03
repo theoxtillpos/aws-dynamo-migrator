@@ -16,7 +16,9 @@ import {
 
   const config = getConfig();
 
-  const allFiles = listAllFiles(path.resolve('./', config.migrationsPath));
+  // exclusively use path.join instead of path.resolve to for relative path instead of absolute
+  const migrationPath = path.join('./', config.migrationsPath);
+  const allFiles = listAllFiles(migrationPath);
   console.log(
     `Found ${allFiles.length} files inside the migrations folder`,
     allFiles,
