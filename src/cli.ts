@@ -10,8 +10,9 @@ import {
   loadAllModules,
 } from './utils';
 
-(async function main() {
-  const argv = yargs(hideBin(process.argv)).parseSync();
+(async function main(argv) {
+  // TODO: do something with argv
+  const parsedArgs = yargs(hideBin(argv)).parseSync();
 
   const config = getConfig();
 
@@ -25,5 +26,5 @@ import {
   console.log(`Successfully load ${allModules.length} typescript modules`);
 
   const allMigrations = allModules.filter(isValidMigration);
-  console.log(`Found ${allMigrations.length} valid migrations implementation`);
-})();
+  console.log(`Found ${allMigrations.length} valid migration implementations`);
+})(process.argv);

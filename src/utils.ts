@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import config from 'interpret';
+import rechoir from 'rechoir';
 import { Migration, MigratorConfig } from './types';
 
 /**
@@ -35,8 +37,13 @@ export function getConfig(): MigratorConfig {
   };
 }
 
-export function isTypescriptFile(path: string): boolean {
-  const regex = /\.ts$/i;
+/**
+ * Check if the file in path is a js or ts file
+ * @param path file path to check
+ * @returns true if path is either a js or ts file
+ */
+export function isValidExtensions(path: string): boolean {
+  const regex = /\.[tj]s$/i;
   return regex.test(path);
 }
 
@@ -46,22 +53,26 @@ export function isTypescriptFile(path: string): boolean {
  * @returns loaded modules
  */
 export async function loadAllModules(paths: string[]) {
-  //   // use Promise.allSettled and ignore failure
-  //   const allModules = await Promise.allSettled(
-  //     paths.filter(isTypescriptFile).map(path => import(path)),
-  //   );
-
-  //   // return only fulfilled modules
-  //   return allModules
-  //     .filter(module => module.status === 'fulfilled')
-  //     .map(module => (module as any).value);
-  const allModules = await Promise.all(
-    paths.filter(isTypescriptFile).map(file => import(file)),
+  // use Promise.allSettled and ignore failure
+  const allModules = await Promise.allSettled(
+    paths.filter(isValidExtensions).map(file => {
+      rechoir.prepare(config.jsVariants, file);
+      return import(file);
+    }),
   );
 
-  return allModules;
+  // return only fulfilled modules
+  return allModules
+    .filter(module => module.status === 'fulfilled')
+    .map(module => (module as any).value);
 }
 
+/**
+ * Check if a imported module is a valid Migration
+ * @param module module to check
+ * @returns module is a valid Migration
+ */
 export function isValidMigration(module: any): module is Migration {
-  return module.default instanceof Migration;
+  // Note: a valid migration is a default export that is a superclass of Migration class
+  return module?.default?.prototype instanceof Migration;
 }
