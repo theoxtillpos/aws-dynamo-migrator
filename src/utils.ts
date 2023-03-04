@@ -32,14 +32,26 @@ export function listAllFiles(dir: string): string[] {
  * @returns combined config
  */
 export function getConfig(): MigratorConfig {
-  // TODO: dynamic configuration
+  let userConfig: Partial<MigratorConfig> = {};
+
+  const userConfigPath = path.resolve(process.cwd(), 'migrator.config.json');
+  if (fs.existsSync(userConfigPath)) {
+    // read user's config if exists
+    userConfig = JSON.parse(fs.readFileSync(userConfigPath).toString());
+  }
+
   const config: MigratorConfig = Object.assign(
     {},
     defaultConfig,
+    userConfig,
   ) as MigratorConfig;
 
+  // override with env vars if exists
   config.dynamoDB.tableName =
     process.env.DYNAMODB_TABLE_NAME ?? config.dynamoDB.tableName;
+  config.dynamoDB.region = process.env.AWS_REGION ?? config.dynamoDB.region;
+  config.dynamoDB.endpoint =
+    process.env.DYANMODB_TABLE_ENDPOINT ?? config.dynamoDB.endpoint;
 
   return config;
 }

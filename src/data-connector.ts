@@ -4,15 +4,19 @@ import { getConfig } from './utils';
 
 const config = getConfig();
 
-const dynamo = new DynamoHelper({
-  name: config.dynamoDB.tableName,
-  indexes: {
-    default: {
-      partitionKeyName: 'pk',
-      sortKeyName: 'sk',
+const dynamo = new DynamoHelper(
+  {
+    name: config.dynamoDB.tableName,
+    indexes: {
+      default: {
+        partitionKeyName: 'pk',
+        sortKeyName: 'sk',
+      },
     },
   },
-});
+  config.dynamoDB.region,
+  config.dynamoDB.endpoint,
+);
 
 export function getAllMigrations(): Promise<MigrationModel[]> {
   // TODO: make this customizable
