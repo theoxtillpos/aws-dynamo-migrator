@@ -99,7 +99,7 @@ async function rollbackSingleMigration(
       applyAllMigrations,
     )
     .command(
-      'apply <path>',
+      ['apply <path>', 'up <path>'],
       'Apply a specific migration from path',
       yargs => {
         return yargs.positional('path', {
@@ -110,7 +110,7 @@ async function rollbackSingleMigration(
       applySingleMigration,
     )
     .command(
-      'rollback <path>',
+      ['rollback <path>', 'down <path>'],
       'Rollback a specific migration from path',
       yargs =>
         yargs.positional('path', {
