@@ -6,7 +6,7 @@ import yargs, { ArgumentsCamelCase } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { getAllMigrations } from './data-connector';
 import { applyMigration, rollbackMigration } from './migration';
-import { ImportedModule, Migration } from './types';
+import { ImportedModule, Migration, MigrationStatus } from './types';
 import {
   checkAndLoadMigration,
   getConfig,
@@ -27,7 +27,7 @@ async function applyAllMigrations() {
   );
 
   const allModules = await loadAllModules(allFiles);
-  console.log(`Successfully load ${allModules.length} modules`);
+  console.log(`Successfully loaded ${allModules.length} modules`);
 
   const allMigrationModules: ImportedModule<typeof Migration>[] =
     allModules.filter(importedModule => isValidMigration(importedModule));
@@ -41,14 +41,27 @@ async function applyAllMigrations() {
     migration => !allMigratedPaths.includes(migration.path),
   ); // exclude migrated records
 
-  const results = [];
-  for (const migration of unApplied) {
-    console.log(`Applying migration "${migration.path}"`);
-    results.push(await applyMigration(migration));
-  }
+  console.log(`Found ${unApplied.length} un-applied migrations`);
+  if (unApplied.length) {
+    const results = [];
+    for (const migration of unApplied) {
+      console.log(`Applying migration "${migration.path}"`);
+      results.push(await applyMigration(migration));
+    }
 
-  // TODO: handle migration results
-  console.log(`Successfully applied ${unApplied.length} migrations`);
+    // status reports
+    console.log(
+      `Applied ${unApplied.length} migrations with statuses`,
+      '\n\t',
+      `${MigrationStatus.SUCCESS}:`,
+      results.filter(migration => migration.status === MigrationStatus.SUCCESS)
+        .length,
+      '\n\t',
+      `${MigrationStatus.FAILURE}:`,
+      results.filter(migration => migration.status === MigrationStatus.FAILURE)
+        .length,
+    );
+  }
 }
 
 async function applySingleMigration(
@@ -57,7 +70,8 @@ async function applySingleMigration(
   const module = await checkAndLoadMigration(argv.path);
 
   console.log(`Applying migration at "${argv.path}"`);
-  await applyMigration(module);
+  const result = await applyMigration(module);
+  console.log(`Finished with status: ${result.status}`);
 }
 
 async function rollbackSingleMigration(
@@ -66,7 +80,8 @@ async function rollbackSingleMigration(
   const module = await checkAndLoadMigration(argv.path);
 
   console.log(`Rolling back migration at "${argv.path}"`);
-  await rollbackMigration(module);
+  const result = await rollbackMigration(module);
+  console.log(`Finished with status: ${result.status}`);
 }
 
 (function main(argv) {

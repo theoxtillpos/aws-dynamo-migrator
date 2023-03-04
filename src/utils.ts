@@ -109,14 +109,15 @@ export function isValidMigration(
  * @returns migration module if valid
  */
 export async function checkAndLoadMigration(filePath: string) {
-  const absolutePath = path.resolve(filePath);
-  if (!fs.existsSync(absolutePath) || !isValidExtensions(absolutePath)) {
-    throw new Error(`"${filePath}" is not a valid file!`);
+  // recompile path to get rid of any unnecessary dot
+  const relativePath = path.join(filePath);
+  if (!fs.existsSync(relativePath) || !isValidExtensions(relativePath)) {
+    throw new Error(`"${relativePath}" is not a valid file!`);
   }
 
-  const modules = await loadAllModules([filePath]);
+  const modules = await loadAllModules([relativePath]);
   if (!modules.length || !isValidMigration(modules[0])) {
-    throw new Error(`"${filePath}" is not a valid migration!`);
+    throw new Error(`"${relativePath}" is not a valid migration!`);
   }
 
   return modules[0] as ImportedModule<typeof Migration>;

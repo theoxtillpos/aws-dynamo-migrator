@@ -25,7 +25,9 @@ export async function applyMigration(
     status,
   };
 
-  return putMigration(migrationModel);
+  await putMigration(migrationModel);
+
+  return migrationModel;
 }
 
 export async function rollbackMigration(
@@ -50,9 +52,13 @@ export async function rollbackMigration(
     status = MigrationStatus.FAILURE;
   }
 
-  return putMigration({
+  const migrationModel = {
     ...appliedMigration,
     status,
     rollBackedAt: Date.now(),
-  });
+  };
+
+  await putMigration(migrationModel);
+
+  return migrationModel;
 }
