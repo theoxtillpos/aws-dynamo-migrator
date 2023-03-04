@@ -25,8 +25,12 @@ import {
   );
 
   const allModules = await loadAllModules(allFiles);
-  console.log(`Successfully load ${allModules.length} typescript modules`);
+  console.log(`Successfully load ${allModules.length} modules`);
 
-  const allMigrations = allModules.filter(isValidMigration);
+  const allMigrations = allModules.filter(importedModule =>
+    isValidMigration(importedModule.module),
+  );
   console.log(`Found ${allMigrations.length} valid migration implementations`);
+
+  // TODO: run the migrations
 })(process.argv);

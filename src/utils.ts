@@ -4,6 +4,11 @@ import config from 'interpret';
 import rechoir from 'rechoir';
 import { Migration, MigratorConfig } from './types';
 
+interface ImportedModule {
+  path: string;
+  module: any;
+}
+
 /**
  * Recursively list all find inside a folder and sub-folders
  * @param dir path to the directory
@@ -52,19 +57,35 @@ export function isValidExtensions(path: string): boolean {
  * @param paths paths to load modules from
  * @returns loaded modules
  */
-export async function loadAllModules(paths: string[]) {
+export async function loadAllModules(
+  paths: string[],
+): Promise<ImportedModule[]> {
   // use Promise.allSettled and ignore failure
-  const allModules = await Promise.allSettled(
-    paths.filter(isValidExtensions).map(file => {
-      rechoir.prepare(config.jsVariants, file);
-      return import(file);
+  const allModules = await Promise.allSettled<ImportedModule>(
+    paths.filter(isValidExtensions).map(async file => {
+      // convert to absolute path for import to work
+      const absolutePath = path.resolve(file);
+      rechoir.prepare(config.jsVariants, absolutePath);
+      const module = await import(absolutePath);
+
+      return {
+        path: file, // returned path is relative one, for record keeping purpose
+        module,
+      };
     }),
   );
+
+  const errors = allModules
+    .filter(module => module.status !== 'fulfilled')
+    .map(error => (error as PromiseRejectedResult).reason);
+  if (errors.length) {
+    console.warn('Failed to import the following modules:', errors);
+  }
 
   // return only fulfilled modules
   return allModules
     .filter(module => module.status === 'fulfilled')
-    .map(module => (module as any).value);
+    .map(module => (module as PromiseFulfilledResult<ImportedModule>).value);
 }
 
 /**

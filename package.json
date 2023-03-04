@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "eslint": "eslint src/ --ext .ts"
+    "lint": "eslint src/ --ext .ts"
   },
   "author": {
     "name": "Theo",
