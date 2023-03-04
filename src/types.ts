@@ -18,11 +18,21 @@ export interface MigrationModel {
   pk: string;
   sk: string;
   path: string;
-  ranAt: Date;
-  rollBackedAt: Date;
+  ranAt: number;
+  rollBackedAt?: number;
   status: MigrationStatus;
 }
 
 export interface MigratorConfig {
   migrationsPath: string;
+  dynamoDB: {
+    tableName: string;
+    region?: string;
+    endpoint?: string;
+  };
+}
+
+export interface ImportedModule<T = any> {
+  path: string;
+  module: T;
 }

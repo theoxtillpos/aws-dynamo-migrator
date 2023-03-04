@@ -9,6 +9,9 @@ import {
   listAllFiles,
   loadAllModules,
 } from './utils';
+import { ImportedModule, Migration } from './types';
+import { getAllMigrations } from './data-connector';
+import { applyMigration } from './migration';
 
 (async function main(argv) {
   // TODO: do something with argv
@@ -27,10 +30,24 @@ import {
   const allModules = await loadAllModules(allFiles);
   console.log(`Successfully load ${allModules.length} modules`);
 
-  const allMigrations = allModules.filter(importedModule =>
-    isValidMigration(importedModule.module),
+  const allMigrationModules: ImportedModule<typeof Migration>[] =
+    allModules.filter(importedModule => isValidMigration(importedModule));
+  console.log(
+    `Found ${allMigrationModules.length} valid migration implementations`,
   );
-  console.log(`Found ${allMigrations.length} valid migration implementations`);
 
-  // TODO: run the migrations
+  const allMigrations = await getAllMigrations();
+  const allMigratedPaths = allMigrations.map(migration => migration.path);
+  const unApplied = allMigrationModules.filter(
+    migration => !allMigratedPaths.includes(migration.path),
+  ); // exclude migrated records
+
+  const results = [];
+  for (const migration of unApplied) {
+    console.log(`Applying migration "${migration.path}"`);
+    results.push(await applyMigration(migration));
+  }
+
+  // TODO: handle migration results
+  console.log(`Successfully applied ${unApplied.length} migrations`);
 })(process.argv);

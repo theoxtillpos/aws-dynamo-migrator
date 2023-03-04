@@ -2,12 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import config from 'interpret';
 import rechoir from 'rechoir';
-import { Migration, MigratorConfig } from './types';
-
-interface ImportedModule {
-  path: string;
-  module: any;
-}
+import { ImportedModule, Migration, MigratorConfig } from './types';
+import defaultConfig from './config.default.json';
 
 /**
  * Recursively list all find inside a folder and sub-folders
@@ -37,9 +33,15 @@ export function listAllFiles(dir: string): string[] {
  */
 export function getConfig(): MigratorConfig {
   // TODO: dynamic configuration
-  return {
-    migrationsPath: 'migrations',
-  };
+  const config: MigratorConfig = Object.assign(
+    {},
+    defaultConfig,
+  ) as MigratorConfig;
+
+  config.dynamoDB.tableName =
+    process.env.DYNAMODB_TABLE_NAME ?? config.dynamoDB.tableName;
+
+  return config;
 }
 
 /**
@@ -70,7 +72,7 @@ export async function loadAllModules(
 
       return {
         path: file, // returned path is relative one, for record keeping purpose
-        module,
+        module: module.default, // only consider the default export
       };
     }),
   );
@@ -93,7 +95,9 @@ export async function loadAllModules(
  * @param module module to check
  * @returns module is a valid Migration
  */
-export function isValidMigration(module: any): module is Migration {
-  // Note: a valid migration is a default export that is a superclass of Migration class
-  return module?.default?.prototype instanceof Migration;
+export function isValidMigration(
+  importedModule: ImportedModule,
+): importedModule is ImportedModule<typeof Migration> {
+  // Note: a valid migration is a subclass of Migration class
+  return importedModule?.module?.prototype instanceof Migration;
 }

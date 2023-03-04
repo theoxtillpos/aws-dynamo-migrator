@@ -1,0 +1,6 @@
+{
+  "migrationsPath": "migrations",
+  "dynamoDB": {
+    "tableName": ""
+  }
+}
