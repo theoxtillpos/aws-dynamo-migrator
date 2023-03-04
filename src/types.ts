@@ -25,6 +25,7 @@ export interface MigrationModel {
 
 export interface MigratorConfig {
   migrationsPath: string;
+  exclude?: string[];
   dynamoDB: {
     tableName: string;
     region?: string;
@@ -32,6 +33,7 @@ export interface MigratorConfig {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface ImportedModule<T = any> {
   path: string;
   module: T;

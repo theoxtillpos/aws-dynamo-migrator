@@ -15,17 +15,17 @@ export async function applyMigration(
   } catch (error) {
     console.error(`Error applying migration "${migration.path}":`, error);
     status = MigrationStatus.FAILURE;
-  } finally {
-    const migrationModel: MigrationModel = {
-      pk: 'migration#all',
-      sk: `path#${migration.path}`,
-      path: migration.path,
-      ranAt: Date.now(),
-      status,
-    };
-
-    return putMigration(migrationModel);
   }
+
+  const migrationModel: MigrationModel = {
+    pk: 'migration#all',
+    sk: `path#${migration.path}`,
+    path: migration.path,
+    ranAt: Date.now(),
+    status,
+  };
+
+  return putMigration(migrationModel);
 }
 
 export async function rollbackMigration(
@@ -48,11 +48,11 @@ export async function rollbackMigration(
   } catch (error) {
     console.error(`Error rolling back migration "${migration.path}":`, error);
     status = MigrationStatus.FAILURE;
-  } finally {
-    return putMigration({
-      ...appliedMigration,
-      status,
-      rollBackedAt: Date.now(),
-    });
   }
+
+  return putMigration({
+    ...appliedMigration,
+    status,
+    rollBackedAt: Date.now(),
+  });
 }
