@@ -28,7 +28,7 @@ export async function applyMigration(
   }
 }
 
-export async function rollBackMigration(
+export async function rollbackMigration(
   migration: ImportedModule<typeof Migration>,
 ) {
   const appliedMigration = await getMigrationByPath(migration.path);

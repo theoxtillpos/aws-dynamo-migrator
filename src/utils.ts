@@ -113,3 +113,17 @@ export function isValidMigration(
   // Note: a valid migration is a subclass of Migration class
   return importedModule?.module?.prototype instanceof Migration;
 }
+
+export async function checkAndLoadMigration(filePath: string) {
+  const absolutePath = path.resolve(filePath);
+  if (!fs.existsSync(absolutePath) || !isValidExtensions(absolutePath)) {
+    throw new Error(`"${filePath}" is not a valid file!`);
+  }
+
+  const modules = await loadAllModules([filePath]);
+  if (!modules.length || !isValidMigration(modules[0])) {
+    throw new Error(`"${filePath}" is not a valid migration!`);
+  }
+
+  return modules[0] as ImportedModule<typeof Migration>;
+}

@@ -18,12 +18,14 @@
   "private": false,
   "dependencies": {
     "@hitz-group/dynamo-helper": "^0.5.19",
+    "figlet": "^1.5.2",
     "interpret": "^3.1.1",
     "rechoir": "^0.8.0",
     "ts-node": "^10.9.1",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
+    "@types/figlet": "^1.5.5",
     "@types/interpret": "^1.1.1",
     "@types/node": "^18.14.3",
     "@types/rechoir": "^0.6.1",
