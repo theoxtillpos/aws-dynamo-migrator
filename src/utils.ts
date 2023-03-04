@@ -2,29 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import config from 'interpret';
 import rechoir from 'rechoir';
+import glob from 'glob';
 import { ImportedModule, Migration, MigratorConfig } from './types';
 import defaultConfig from './config.default.json';
 
 /**
- * Recursively list all find inside a folder and sub-folders
+ * Recursively list all js and ts files inside a folder and sub-folders
  * @param dir path to the directory
  */
-export function listAllFiles(dir: string): string[] {
-  const allFiles = fs.readdirSync(dir);
-  const nonDirFiles: string[] = [];
-
-  allFiles.forEach(fileName => {
-    const filePath = path.join(dir, fileName);
-    const stat = fs.statSync(filePath);
-    if (stat.isDirectory()) {
-      // if the path is a directory, recursively list all files inside
-      nonDirFiles.push(...listAllFiles(filePath));
-    } else {
-      nonDirFiles.push(filePath);
-    }
+export function listAllFiles(dir: string, exclude?: string[]): string[] {
+  return glob.globSync([`${dir}/**/*.ts`, `${dir}/**/*.js`], {
+    ignore: exclude,
   });
-
-  return nonDirFiles;
 }
 
 /**
@@ -76,7 +65,7 @@ export async function loadAllModules(
 ): Promise<ImportedModule[]> {
   // use Promise.allSettled and ignore failure
   const allModules = await Promise.allSettled<ImportedModule>(
-    paths.filter(isValidExtensions).map(async file => {
+    paths.map(async file => {
       // convert to absolute path for import to work
       const absolutePath = path.resolve(file);
       rechoir.prepare(config.jsVariants, absolutePath);
@@ -114,6 +103,11 @@ export function isValidMigration(
   return importedModule?.module?.prototype instanceof Migration;
 }
 
+/**
+ * Check and load migration module
+ * @param filePath path to check
+ * @returns migration module if valid
+ */
 export async function checkAndLoadMigration(filePath: string) {
   const absolutePath = path.resolve(filePath);
   if (!fs.existsSync(absolutePath) || !isValidExtensions(absolutePath)) {

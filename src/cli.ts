@@ -20,7 +20,7 @@ async function applyAllMigrations() {
 
   // exclusively use path.join instead of path.resolve to for relative path instead of absolute
   const migrationPath = path.join('./', config.migrationsPath);
-  const allFiles = listAllFiles(migrationPath);
+  const allFiles = listAllFiles(migrationPath, config.exclude);
   console.log(
     `Found ${allFiles.length} files inside the migrations folder`,
     allFiles,
