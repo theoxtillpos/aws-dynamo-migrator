@@ -32,6 +32,7 @@ jobs:
 
   npm-publish:
     name: Publish on npm
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
