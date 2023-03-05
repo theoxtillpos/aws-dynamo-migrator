@@ -41,6 +41,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -62,6 +63,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
