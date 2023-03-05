@@ -333,7 +333,7 @@
 
 "@hitz-group/dynamo-helper@^0.5.19":
   version "0.5.19"
-  resolved "https://npm.pkg.github.com/download/@hitz-group/dynamo-helper/0.5.19/cf376f221d1489076a97d0f189ac6fdb0e07145a#cf376f221d1489076a97d0f189ac6fdb0e07145a"
+  resolved "https://registry.yarnpkg.com/@hitz-group/dynamo-helper/-/dynamo-helper-0.5.19.tgz#cf376f221d1489076a97d0f189ac6fdb0e07145a"
   integrity sha512-stVnoB3Zu7xCvt9EaW/DR5z1LNw769C5K1QhecNjXLoMO5a4P1I+XvHhCVnsShWSy+ILIEaSGEOS1rJ/4KS2Mg==
   dependencies:
     aws-sdk "2.784.0"
