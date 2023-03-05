@@ -50,10 +50,10 @@ export async function rollbackMigration(
     status = MigrationStatus.FAILURE;
   }
 
-  const migrationModel = {
+  const migrationModel: MigrationModel = {
     ...appliedMigration,
     status,
-    rollBackedAt: Date.now(),
+    rollbackedAt: Date.now(),
   };
 
   return putMigration(migrationModel);

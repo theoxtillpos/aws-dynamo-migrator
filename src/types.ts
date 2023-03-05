@@ -19,7 +19,7 @@ export interface MigrationModel {
   sk: string;
   path: string;
   ranAt: number;
-  rollBackedAt?: number;
+  rollbackedAt?: number;
   status: MigrationStatus;
 }
 

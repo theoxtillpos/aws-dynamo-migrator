@@ -1,5 +1,3 @@
 import { Migration } from '../../types';
 
-export class MockMigration extends Migration {}
-
-export default MockMigration;
+export default class MockMigration extends Migration {}

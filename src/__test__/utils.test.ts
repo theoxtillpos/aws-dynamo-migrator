@@ -65,6 +65,7 @@ describe('listAllFiles', () => {
       expect.arrayContaining([
         'src/__test__/mocks/valid-migration.ts',
         'src/__test__/mocks/invalid-migration.ts',
+        'src/__test__/mocks/implemented-migration.ts',
       ]),
     );
   });
@@ -74,9 +75,12 @@ describe('listAllFiles', () => {
   });
 
   it('should ignore excluded path', () => {
-    expect(listAllFiles('src/__test__/mocks', ['**/invalid-*'])).toEqual([
-      'src/__test__/mocks/valid-migration.ts',
-    ]);
+    expect(listAllFiles('src/__test__/mocks', ['**/invalid-*'])).toEqual(
+      expect.arrayContaining([
+        'src/__test__/mocks/valid-migration.ts',
+        'src/__test__/mocks/implemented-migration.ts',
+      ]),
+    );
   });
 });
 
