@@ -15,6 +15,10 @@
     "name": "Theo",
     "email": "theo.t@oolio.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theoxtillpos/dynamodb-migrator.git"
+  },
   "license": "MIT",
   "private": false,
   "dependencies": {
