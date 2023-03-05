@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "lint": "eslint src/ --ext .ts"
+    "lint": "eslint src/ --ext .ts",
+    "test": "jest"
   },
   "author": {
     "name": "Theo",
@@ -26,8 +27,11 @@
     "yargs": "^17.7.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@jest/globals": "^29.4.3",
     "@types/figlet": "^1.5.5",
     "@types/interpret": "^1.1.1",
+    "@types/jest": "^29.4.0",
     "@types/node": "^18.14.3",
     "@types/rechoir": "^0.6.1",
     "@types/yargs": "^17.0.22",
@@ -35,7 +39,9 @@
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
+    "jest": "^29.4.3",
     "prettier": "^2.8.4",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.9.5"
   }
 }
