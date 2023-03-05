@@ -1,0 +1,28 @@
+name: CI - Unit testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node_version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Run test
+        run: yarn test
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
