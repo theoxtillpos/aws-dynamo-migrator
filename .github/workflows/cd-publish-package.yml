@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 14
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
       - name: Upload artifact
@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
+      - run: yarn install --frozen-lockfile
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -63,7 +63,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           registry-url: 'https://npm.pkg.github.com'
-      - run: npm ci
+      - run: yarn install --frozen-lockfile
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
