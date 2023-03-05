@@ -40,7 +40,7 @@ export function getConfig(): MigratorConfig {
     process.env.DYNAMODB_TABLE_NAME ?? config.dynamoDB.tableName;
   config.dynamoDB.region = process.env.AWS_REGION ?? config.dynamoDB.region;
   config.dynamoDB.endpoint =
-    process.env.DYANMODB_TABLE_ENDPOINT ?? config.dynamoDB.endpoint;
+    process.env.DYNAMODB_TABLE_ENDPOINT ?? config.dynamoDB.endpoint;
 
   return config;
 }

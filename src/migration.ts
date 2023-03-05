@@ -11,7 +11,7 @@ export async function applyMigration(
 ) {
   let status = MigrationStatus.SUCCESS;
   try {
-    migration.module.up();
+    await migration.module.up();
   } catch (error) {
     console.error(`Error applying migration "${migration.path}":`, error);
     status = MigrationStatus.FAILURE;
@@ -25,9 +25,7 @@ export async function applyMigration(
     status,
   };
 
-  await putMigration(migrationModel);
-
-  return migrationModel;
+  return putMigration(migrationModel);
 }
 
 export async function rollbackMigration(
@@ -46,19 +44,17 @@ export async function rollbackMigration(
 
   let status = MigrationStatus.ROLLBACKED;
   try {
-    migration.module.down();
+    await migration.module.down();
   } catch (error) {
     console.error(`Error rolling back migration "${migration.path}":`, error);
     status = MigrationStatus.FAILURE;
   }
 
-  const migrationModel = {
+  const migrationModel: MigrationModel = {
     ...appliedMigration,
     status,
-    rollBackedAt: Date.now(),
+    rollbackedAt: Date.now(),
   };
 
-  await putMigration(migrationModel);
-
-  return migrationModel;
+  return putMigration(migrationModel);
 }
