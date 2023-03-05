@@ -10,6 +10,7 @@ on:
 
 jobs:
   test:
+    name: Test and upload code coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

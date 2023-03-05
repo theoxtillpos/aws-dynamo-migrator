@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import {
+  checkAndLoadMigration,
   getConfig,
   isValidExtensions,
   isValidMigration,
@@ -145,5 +146,34 @@ describe('loadAllModules', () => {
       'Failed to import the following modules:',
       expect.anything(),
     );
+  });
+});
+
+describe('checkAndLoadMigration', () => {
+  it('should throw error if provided path is not exists', async () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(false);
+    const file = faker.system.filePath();
+    await expect(checkAndLoadMigration(file)).rejects.toThrow(
+      new Error(`"${file}" is not a valid file!`),
+    );
+  });
+
+  it('should throw error if provided path is not a valid migration', async () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+
+    const file = 'src/__test__/mocks/invalid-migration.ts';
+    await expect(checkAndLoadMigration(file)).rejects.toThrow(
+      new Error(`"${file}" is not a valid migration!`),
+    );
+  });
+
+  it('should return imported module if provided path is valid', async () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+
+    const file = 'src/__test__/mocks/valid-migration.ts';
+    await expect(checkAndLoadMigration(file)).resolves.toEqual({
+      path: file,
+      module: expect.anything(),
+    });
   });
 });

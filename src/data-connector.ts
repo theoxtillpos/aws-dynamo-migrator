@@ -40,5 +40,9 @@ export function getMigrationByPath(path: string): Promise<MigrationModel> {
 export async function putMigration(model: MigrationModel) {
   const result = await dynamo.putItem(model);
 
-  return result.$response.error ?? model;
+  if (result?.$response?.error) {
+    throw result.$response.error;
+  }
+
+  return model;
 }

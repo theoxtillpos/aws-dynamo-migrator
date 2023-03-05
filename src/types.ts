@@ -1,9 +1,9 @@
 export abstract class Migration {
-  static up(): void {
+  static async up(): Promise<void> {
     throw new Error('Up migration not implemented');
   }
 
-  static down(): void {
+  static async down(): Promise<void> {
     throw new Error('Down migration not Implemented');
   }
 }
