@@ -1,6 +1,6 @@
 {
   "name": "aws-dynamo-migrator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple framework to manage DynamoDB migrations as code",
   "main": "dist/index.js",
   "bin": {
