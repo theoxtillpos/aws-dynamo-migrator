@@ -11,7 +11,7 @@ on:
 jobs:
   npm-publish:
     name: Publish on NPM
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14
+          registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build
