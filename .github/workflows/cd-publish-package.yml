@@ -11,7 +11,6 @@ on:
 jobs:
   npm-publish:
     name: Publish on npm
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +31,6 @@ jobs:
 
   github-publish:
     name: Publish on Github
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
