@@ -19,6 +19,13 @@
     "type": "git",
     "url": "https://github.com/theoxtillpos/aws-dynamo-migrator.git"
   },
+  "keywords": [
+    "dynamo",
+    "dynamodb",
+    "aws",
+    "migration",
+    "migrator"
+  ],
   "license": "MIT",
   "private": false,
   "dependencies": {
