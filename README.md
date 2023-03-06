@@ -1,7 +1,7 @@
 # aws-dynamo-migrator
 
 [![codecov](https://codecov.io/gh/theoxtillpos/aws-dynamo-migrator/branch/main/graph/badge.svg?token=60ILZZYZ6R)](https://codecov.io/gh/theoxtillpos/aws-dynamo-migrator)
-[![CD - Publish package](https://github.com/theoxtillpos/aws-dynamo-migrator/actions/workflows/cd-publish-package.yml/badge.svg?branch=main)](https://github.com/theoxtillpos/aws-dynamo-migrator/actions/workflows/cd-publish-package.yml)
+[![CD - Publish package](https://github.com/theoxtillpos/aws-dynamo-migrator/actions/workflows/cd-publish-package.yml/badge.svg)](https://github.com/theoxtillpos/aws-dynamo-migrator/actions/workflows/cd-publish-package.yml)
 
 A simple framework to manage DynamoDB migrations as code.
 
