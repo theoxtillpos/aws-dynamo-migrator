@@ -37,15 +37,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          registry-url: 'https://registry.npmjs.org'
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          registry-url: 'https://registry.npmjs.org'
       - name: Publish
         run: yarn publish
         env:
@@ -58,16 +59,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          registry-url: 'https://npm.pkg.github.com'
-          always-auth: true
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          registry-url: 'https://npm.pkg.github.com'
+          always-auth: true
       - name: Publish
         run: npm publish
         env:
