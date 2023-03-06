@@ -1,6 +1,6 @@
 {
-  "name": "dynamodb-migrator",
-  "version": "0.0.1",
+  "name": "aws-dynamo-migrator",
+  "version": "0.1.0",
   "description": "A simple framework to manage DynamoDB migrations as code",
   "main": "dist/index.js",
   "bin": {
@@ -15,6 +15,17 @@
     "name": "Theo",
     "email": "theo.t@oolio.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theoxtillpos/aws-dynamo-migrator.git"
+  },
+  "keywords": [
+    "dynamo",
+    "dynamodb",
+    "aws",
+    "migration",
+    "migrator"
+  ],
   "license": "MIT",
   "private": false,
   "dependencies": {
