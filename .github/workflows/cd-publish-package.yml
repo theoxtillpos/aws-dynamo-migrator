@@ -68,6 +68,6 @@ jobs:
           name: dist
           path: dist
       - name: Publish
-        run: yarn publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
